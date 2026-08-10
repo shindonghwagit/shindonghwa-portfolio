@@ -12,6 +12,7 @@ export const projects: Project[] = [
     title: 'CVDLens',
     kind: 'Capstone · Full-stack + AI',
     desc: 'Real-time color-blindness correction web app. Implemented the color-vision transform by hand instead of importing a library.',
+    imgs: ['/og_cover.jpg'],
   },
   {
     n: '03',
