@@ -17,7 +17,7 @@ export function ProjectCard({ project }: { project: Project }) {
           project.imgs.map((src, i) => (
             <img
               key={src}
-              className="thumb-img"
+              className={`thumb-img ${project.fit === 'contain' ? 'thumb-img-contain' : ''}`}
               src={src}
               alt={`${project.title} ${i + 1}`}
               loading="lazy"

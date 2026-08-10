@@ -13,6 +13,7 @@ export const projects: Project[] = [
     kind: 'Capstone · Full-stack + AI',
     desc: 'Real-time color-blindness correction web app. Implemented the color-vision transform by hand instead of importing a library.',
     imgs: ['/og_cover.jpg'],
+    fit: 'contain',
   },
   {
     n: '03',
@@ -20,6 +21,7 @@ export const projects: Project[] = [
     kind: 'Team of 2',
     desc: 'Browser-based node visual-programming studio. ReactFlow node editor, Canvas 2D rendering, MediaPipe hand tracking.',
     imgs: ['/assets1.png'],
+    fit: 'contain',
   },
   {
     n: '04',

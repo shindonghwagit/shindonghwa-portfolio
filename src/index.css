@@ -249,6 +249,11 @@ body { min-height: 100vh; }
   transition: transform .6s ease;
 }
 .card:hover .thumb-img { transform: scale(1.04); }
+.thumb-img-contain {
+  object-fit: contain;
+  padding: 14px;
+}
+.card:hover .thumb-img-contain { transform: none; }
 .thumb-multi {
   gap: 14px;
   padding: 18px;

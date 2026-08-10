@@ -5,4 +5,5 @@ export type Project = {
   desc: string
   href?: string
   imgs?: string[]
+  fit?: 'cover' | 'contain'
 }
