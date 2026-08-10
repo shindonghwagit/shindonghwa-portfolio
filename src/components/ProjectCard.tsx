@@ -3,10 +3,26 @@ import type { Project } from '../types'
 
 const ease = [0.2, 0.7, 0.2, 1] as const
 
-export function ProjectCard({ project }: { project: Project }) {
+export function ProjectCard({
+  project,
+  onOpen,
+}: {
+  project: Project
+  onOpen: () => void
+}) {
   return (
     <motion.article
       className="card"
+      role="button"
+      tabIndex={0}
+      aria-label={`${project.title} — view details`}
+      onClick={onOpen}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          onOpen()
+        }
+      }}
       initial={{ opacity: 0, y: 28 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.12 }}
@@ -33,9 +49,9 @@ export function ProjectCard({ project }: { project: Project }) {
       </div>
       <h3 className="c-title">{project.title}</h3>
       <p className="c-desc">{project.desc}</p>
-      <a className="c-link" href={project.href ?? '#'}>
+      <span className="c-link" aria-hidden="true">
         View project →
-      </a>
+      </span>
     </motion.article>
   )
 }
