@@ -1,4 +1,5 @@
 import { useClock } from '../components/useClock'
+import { ReactiveText } from '../components/ReactiveText'
 
 const COLS = [
   { title: 'Pages', links: ['Home', 'Work', 'About', 'FAQ'] },
@@ -69,18 +70,13 @@ export function Footer() {
         </div>
       </div>
 
-      {/* giant wordmark */}
+      {/* giant wordmark — letters lift & light up near the pointer */}
       <div className="flex justify-center overflow-hidden px-4 pb-4">
-        <div className="flex">
-          {WORD.split('').map((ch, i) => (
-            <span
-              key={i}
-              className="font-display text-[clamp(40px,13vw,180px)] font-extrabold leading-none tracking-[-4px] text-white/[0.07]"
-            >
-              {ch}
-            </span>
-          ))}
-        </div>
+        <ReactiveText
+          text={WORD}
+          glow
+          className="font-display text-[clamp(40px,13vw,180px)] font-extrabold leading-none tracking-[-4px] text-white"
+        />
       </div>
 
       {/* status bar */}

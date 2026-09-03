@@ -1,5 +1,6 @@
 import { motion } from 'motion/react'
 import type { ReactNode } from 'react'
+import { ReactiveText } from './ReactiveText'
 
 /** Centered section header: script overline + oversized Bricolage heading. */
 export function SectionHead({
@@ -21,7 +22,7 @@ export function SectionHead({
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         className="font-display text-[clamp(40px,7vw,78px)] font-bold uppercase leading-[0.93] tracking-[-1.5px] text-ink"
       >
-        {title}
+        {typeof title === 'string' ? <ReactiveText text={title} /> : title}
       </motion.h2>
     </div>
   )
