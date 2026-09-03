@@ -31,6 +31,16 @@
   font-family: var(--font-mono);
 }
 
+/* Replace the native pointer with the custom "You" cursor (desktop only). */
+@media (hover: hover) and (pointer: fine) {
+  .ohh,
+  .ohh a,
+  .ohh button,
+  .ohh [role='button'] {
+    cursor: none;
+  }
+}
+
 .ohh .font-display {
   font-family: 'Bricolage Grotesque', var(--font-sans);
 }

@@ -77,11 +77,8 @@ export function Footer() {
             <span className="size-2.5 rounded-[3px] bg-blue/70" /> donghwa.fig
           </span>
           <span className="flex items-center gap-2">
-            <span className="inline-flex -space-x-1.5">
-              <span className="size-3 rounded-full border border-ink bg-brand" />
-              <span className="size-3 rounded-full border border-ink bg-blue" />
-            </span>
-            2 cursors online · {clock} KST
+            <span className="size-3 rounded-full border border-ink bg-brand" />
+            you're online · {clock} KST
           </span>
           <span>© 2026 · made by Donghwa Shin</span>
         </div>

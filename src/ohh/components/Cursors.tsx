@@ -1,59 +1,45 @@
-import { motion } from 'motion/react'
+import { useEffect, useState } from 'react'
+import { motion, useMotionValue, useSpring } from 'motion/react'
 
-/** Decorative "2 cursors online" collaboration flourish, like the original.
- *  One cursor follows the real pointer; a second drifts on its own path. */
-function CursorSvg({ color }: { color: string }) {
-  return (
-    <svg width="22" height="28" viewBox="0 0 22 28" fill="none">
-      <path
-        d="M5.5 3.2 18.4 15.9c.5.5.2 1.4-.5 1.5l-5.9.6c-.4 0-.8.3-1 .7l-2.4 5.4c-.3.7-1.3.6-1.5-.1L2.4 4.3c-.2-.9.6-1.6 1.4-1.1Z"
-        fill={color}
-        stroke="#fff"
-        strokeWidth="1.5"
-      />
-    </svg>
-  )
-}
-
-function Tag({ name, color }: { name: string; color: string }) {
-  return (
-    <span
-      className="ml-4 -mt-1 inline-block rounded-md px-2 py-0.5 font-mono text-[10px] font-bold text-white shadow-sm"
-      style={{ background: color }}
-    >
-      {name}
-    </span>
-  )
-}
-
+/** A single "You" cursor that follows the real pointer with a soft spring —
+ *  the collaborative flourish, minus the chaos. Fine-pointer devices only. */
 export function Cursors() {
+  const [enabled, setEnabled] = useState(false)
+  const x = useMotionValue(-200)
+  const y = useMotionValue(-200)
+  const sx = useSpring(x, { stiffness: 1400, damping: 60, mass: 0.18 })
+  const sy = useSpring(y, { stiffness: 1400, damping: 60, mass: 0.18 })
+
+  useEffect(() => {
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return
+    setEnabled(true)
+    const move = (e: MouseEvent) => {
+      x.set(e.clientX)
+      y.set(e.clientY)
+    }
+    window.addEventListener('mousemove', move)
+    return () => window.removeEventListener('mousemove', move)
+  }, [x, y])
+
+  if (!enabled) return null
+
   return (
-    <div className="pointer-events-none fixed inset-0 z-[60] hidden md:block">
-      {/* Teammate cursor drifting on a loop */}
-      <motion.div
-        className="absolute left-0 top-0 flex items-start"
-        initial={{ x: '20vw', y: '30vh' }}
-        animate={{
-          x: ['18vw', '32vw', '24vw', '40vw', '18vw'],
-          y: ['28vh', '46vh', '62vh', '38vh', '28vh'],
-        }}
-        transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
-      >
-        <CursorSvg color="#0d99ff" />
-        <Tag name="Alex" color="#0d99ff" />
-      </motion.div>
-      <motion.div
-        className="absolute left-0 top-0 flex items-start"
-        initial={{ x: '70vw', y: '55vh' }}
-        animate={{
-          x: ['72vw', '58vw', '66vw', '50vw', '72vw'],
-          y: ['52vh', '40vh', '66vh', '48vh', '52vh'],
-        }}
-        transition={{ duration: 26, repeat: Infinity, ease: 'easeInOut' }}
-      >
-        <CursorSvg color="#f0531c" />
-        <Tag name="You" color="#f0531c" />
-      </motion.div>
-    </div>
+    <motion.div
+      style={{ x: sx, y: sy }}
+      className="pointer-events-none fixed left-0 top-0 z-[101] flex items-start"
+      aria-hidden
+    >
+      <svg width="22" height="28" viewBox="0 0 22 28" fill="none">
+        <path
+          d="M5.5 3.2 18.4 15.9c.5.5.2 1.4-.5 1.5l-5.9.6c-.4 0-.8.3-1 .7l-2.4 5.4c-.3.7-1.3.6-1.5-.1L2.4 4.3c-.2-.9.6-1.6 1.4-1.1Z"
+          fill="#f0531c"
+          stroke="#fff"
+          strokeWidth="1.5"
+        />
+      </svg>
+      <span className="-mt-0.5 ml-1.5 rounded-md rounded-tl-[2px] bg-brand px-1.5 py-0.5 font-mono text-[10px] font-bold text-white shadow-sm">
+        You
+      </span>
+    </motion.div>
   )
 }
