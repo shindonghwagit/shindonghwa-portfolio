@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Caveat:wght@500;600&family=Hanken+Grotesk:ital,wght@0,300..800;1,300..800&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import 'tailwindcss';
+
+/* ohhmydesign.com faithful reproduction — palette pulled straight from the
+   Figma variables (Mirage / Pomegranate / Dodger Blue / Blue Bayoux). */
+@theme {
+  --font-sans: 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Space Mono', ui-monospace, monospace;
+
+  --color-ink: #14202b; /* Mirage */
+  --color-ink-soft: #4a6173; /* Blue Bayoux */
+  --color-brand: #f0531c; /* Pomegranate */
+  --color-blue: #0d99ff; /* Dodger Blue */
+  --color-frame: #ffffff;
+
+  /* Sky gradient stops (measured off the original hero) */
+  --color-sky-top: #7cc0f2;
+  --color-sky-mid: #5eaeea;
+  --color-sky-bot: #3f97e0;
+}
+
+/* Everything on the landing lives under .ohh so nothing leaks elsewhere. */
+.ohh {
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.ohh .font-mono {
+  font-family: var(--font-mono);
+}
+
+.ohh .font-display {
+  font-family: 'Bricolage Grotesque', var(--font-sans);
+}
+
+.ohh .font-script {
+  font-family: 'Caveat', cursive;
+}
+
+/* Bento cell: white card with a corner code label and a blue "layer tab"
+   that slides up on hover — the studio's signature Figma-layer motif. */
+.ohh-cell {
+  position: relative;
+  border: 1px solid rgba(20, 32, 43, 0.13);
+  border-radius: 18px;
+  box-shadow: 0px 20px 50px -32px rgba(20, 19, 16, 0.32);
+}
+.ohh-cell .ohh-tab {
+  position: absolute;
+  left: 16px;
+  top: 2px;
+  transform: translateY(0);
+  opacity: 0;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.ohh-cell:hover .ohh-tab {
+  opacity: 1;
+  transform: translateY(-100%);
+}
+.ohh-cell:hover {
+  border-color: var(--color-blue);
+}
+
+/* Blueprint sky: soft vertical wash with a faint radial highlight top-left,
+   matching the original's light, airy mood. */
+.ohh-sky {
+  background:
+    radial-gradient(120% 80% at 20% 0%, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0) 45%),
+    linear-gradient(180deg, var(--color-sky-top) 0%, var(--color-sky-mid) 42%, var(--color-sky-bot) 100%);
+  background-attachment: fixed;
+}
+
+/* Film grain overlay */
+.ohh-grain::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Reusable "Figma selection" dashed box with corner handles */
+.ohh-select {
+  position: relative;
+  outline: 1px dashed var(--color-blue);
+  border-radius: 7px;
+}
+.ohh-handle {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  background: #fff;
+  border: 1px solid var(--color-blue);
+  border-radius: 2px;
+}
+

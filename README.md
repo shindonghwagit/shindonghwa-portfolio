@@ -1,18 +1,16 @@
-# Portfolio — Donghwa Shin
+# ohhmydesign — Donghwa Shin
 
 **Live:** https://shindonghwa-portfolio.vercel.app
 
-![Portfolio Screenshot](public/screenshot.png)
-
-Personal portfolio site. Dark, minimal, big type, hand-written CSS.
+A bright, sky-blue studio landing page — a faithful reproduction of the
+ohhmydesign.com design, rebuilt from Figma and wired up with real interactions.
 
 ## Stack
 
 - React 19 + TypeScript + Vite 8
-- [motion](https://motion.dev) — scroll-in reveals, hero stagger
-- [lenis](https://lenis.darkroom.engineering/) — smooth scroll
-- Plain CSS (no Tailwind, no UI framework)
-- Fonts: Space Grotesk + Space Mono
+- [Tailwind CSS v4](https://tailwindcss.com) (`@tailwindcss/vite`)
+- [motion](https://motion.dev) — intro loader, scroll reveals, marquee, lever, modals
+- Fonts: Hanken Grotesk, Space Mono, Bricolage Grotesque, Caveat
 
 ## Run
 
@@ -27,27 +25,19 @@ npm run preview  # serve the production build
 
 ```
 src/
-  App.tsx              Lenis + custom cursor + section composition
-  main.tsx
-  index.css            design tokens, globals, all component styles
-  types.ts             Project type
-  data/projects.ts     work entries + focus areas
-  lib/useSeoulTime.ts  KST clock hook
-  components/
-    Navbar.tsx
-    Hero.tsx
-    RobotScene.tsx     Spline 3D character embed
-    StatusCard.tsx     live KST clock
-    FocusMarquee.tsx   infinite scrolling focus bar
-    Work.tsx
-    ProjectCard.tsx
-    About.tsx
-    Contact.tsx
+  main.tsx               renders <OhhLanding />
+  types.ts               Project type
+  data/projects.ts       project entries (used by the Work popups)
+  ohh/
+    OhhLanding.tsx        page composition
+    ohh.css               Tailwind + tokens + keyframes (scoped under .ohh)
+    components/           Topbar, Ruler, Clouds, Cursors, IntroLoader,
+                          ChatWidget, bits, useClock
+    sections/             Hero, Work, About, Process, Services, Difference,
+                          Testimonials, Cta, Pricing, Faq, DropFun, Footer
 ```
 
 ## Contact
-
-**Live:** https://shindonghwa-portfolio.vercel.app
 
 - ek65110112@gmail.com
 - [github.com/shindonghwagit](https://github.com/shindonghwagit)

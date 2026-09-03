@@ -68,7 +68,7 @@ export const projects: Project[] = [
     title: 'GitHub Country Filter',
     kind: 'Side',
     desc: 'Chrome extension that filters GitHub users by country.',
-    imgs: ['/modal.png', '/top-repositories.png'],
+    imgs: ['/top-repositories.png'],
     detail: {
       year: '2024',
       overview:
