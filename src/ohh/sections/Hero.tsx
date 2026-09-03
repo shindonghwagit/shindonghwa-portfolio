@@ -1,10 +1,8 @@
 import { motion } from 'motion/react'
 import { useClock } from '../components/useClock'
+import { ParticleHeadline } from '../components/ParticleHeadline'
 
-// Feather all four edges so the image's baked-in blue gradient dissolves into
-// the sky instead of reading as a hard rectangle.
-const featherMask =
-  'linear-gradient(to right, transparent 0, #000 4%, #000 96%, transparent 100%), linear-gradient(to bottom, transparent 0, #000 6%, #000 94%, transparent 100%)'
+const HEADLINE = ['IMPOSSIBLE', 'TO IGNORE.']
 
 export function Hero() {
   const clock = useClock()
@@ -14,25 +12,15 @@ export function Hero() {
       id="home"
       className="relative flex min-h-screen flex-col items-center justify-center px-6 pb-32 pt-40 text-center"
     >
-      {/* Particle headline: IMPOSSIBLE TO IGNORE — soft fade-in, feathered edges */}
+      {/* Particle headline — live canvas particles (no baked box), scatter on hover */}
+      <h1 className="sr-only">Impossible to ignore</h1>
       <motion.div
-        initial={{ opacity: 0, y: 12, scale: 0.99 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ delay: 0.25, duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2, duration: 0.9 }}
         className="w-full max-w-[1080px]"
       >
-        <img
-          src="/assets/ohh/hero/impossible.png"
-          alt="Impossible to ignore"
-          className="mx-auto w-full select-none"
-          draggable={false}
-          style={{
-            maskImage: featherMask,
-            WebkitMaskImage: featherMask,
-            maskComposite: 'intersect',
-            WebkitMaskComposite: 'source-in',
-          }}
-        />
+        <ParticleHeadline lines={HEADLINE} className="mx-auto aspect-[1080/430] w-full" />
       </motion.div>
 
       {/* mono hint */}
