@@ -15,7 +15,7 @@ import { Footer } from './sections/Footer'
 
 export function OhhLanding() {
   return (
-    <div className="ohh ohh-sky ohh-grain relative min-h-screen overflow-x-hidden">
+    <div className="ohh ohh-sky ohh-grain relative min-h-screen overflow-x-clip">
       <IntroLoader />
       <Clouds />
       <Ruler />

@@ -23,20 +23,41 @@ const ITEMS: WorkItem[] = [
 
 const BY_TITLE: Record<string, Project> = Object.fromEntries(projects.map((p) => [p.title, p]))
 
-function Card({ item, onOpen }: { item: WorkItem; onOpen: () => void }) {
+function Card({ item, onOpen, selected }: { item: WorkItem; onOpen: () => void; selected: boolean }) {
   return (
-    <button onClick={onOpen} className="group relative block w-[clamp(300px,42vw,560px)] shrink-0 text-left">
-      {/* blue label tab */}
-      <span className="absolute -top-6 left-0 z-10 rounded-[5px] rounded-bl-[1px] bg-blue px-2 py-0.5 font-mono text-[10px] font-bold text-white">
+    <button
+      onClick={onOpen}
+      data-work-card
+      className={`group relative block w-[clamp(300px,42vw,560px)] shrink-0 text-left ${selected ? 'is-selected' : ''}`}
+    >
+      {/* blue label tab — brightens when the card is the active one */}
+      <span
+        className={`absolute -top-6 left-0 z-10 rounded-[5px] rounded-bl-[1px] px-2 py-0.5 font-mono text-[10px] font-bold text-white transition-colors ${
+          selected ? 'bg-blue' : 'bg-blue/45'
+        }`}
+      >
         {item.slug}
       </span>
-      <div className="relative rounded-[22px] border-2 border-blue/0 transition-colors group-hover:border-blue">
+      <div
+        className={`relative rounded-[22px] border-2 transition-colors group-hover:border-blue ${
+          selected ? 'border-blue' : 'border-blue/0'
+        }`}
+      >
         {['-left-[6px] -top-[6px]', '-right-[6px] -top-[6px]', '-bottom-[6px] -left-[6px]', '-bottom-[6px] -right-[6px]'].map(
           (p) => (
-            <span key={p} className={`ohh-handle absolute ${p} z-10 opacity-0 transition-opacity group-hover:opacity-100`} />
+            <span
+              key={p}
+              className={`ohh-handle absolute ${p} z-10 transition-opacity group-hover:opacity-100 ${
+                selected ? 'opacity-100' : 'opacity-0'
+              }`}
+            />
           ),
         )}
-        <div className="rounded-[20px] bg-white/55 p-3.5 shadow-[0px_32px_58px_-32px_rgba(20,32,43,0.36)] backdrop-blur-[5px] transition-transform duration-300 group-hover:-translate-y-1">
+        <div
+          className={`rounded-[20px] bg-white/55 p-3.5 shadow-[0px_32px_58px_-32px_rgba(20,32,43,0.36)] backdrop-blur-[5px] transition-transform duration-300 group-hover:-translate-y-1 ${
+            selected ? '-translate-y-1' : ''
+          }`}
+        >
           <div className="rounded-[14px] bg-white p-3.5">
             {/* dark image frame */}
             <div className="relative aspect-[962/669] overflow-hidden rounded-[9px] bg-[#0e1620]">
@@ -47,7 +68,11 @@ function Card({ item, onOpen }: { item: WorkItem; onOpen: () => void }) {
                 loading="lazy"
               />
               {/* view affordance (no arrow) */}
-              <span className="absolute right-3.5 top-3.5 rounded-full border border-white/40 bg-white/15 px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[1px] text-white opacity-0 backdrop-blur-md transition-opacity group-hover:opacity-100">
+              <span
+                className={`absolute right-3.5 top-3.5 rounded-full border border-white/40 bg-white/15 px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[1px] text-white backdrop-blur-md transition-opacity group-hover:opacity-100 ${
+                  selected ? 'opacity-100' : 'opacity-0'
+                }`}
+              >
                 View
               </span>
             </div>
@@ -186,33 +211,58 @@ function ProjectWindow({ item, onClose }: { item: WorkItem; onClose: () => void 
 }
 
 export function Work() {
-  const sectionRef = useRef<HTMLElement>(null)
+  const pinRef = useRef<HTMLDivElement>(null)
   const trackRef = useRef<HTMLDivElement>(null)
   const [open, setOpen] = useState<WorkItem | null>(null)
-  const [overflow, setOverflow] = useState(600)
+  const [overflow, setOverflow] = useState(1000)
   const [active, setActive] = useState(0)
 
-  // Measure how far the track overruns the viewport so the pan reveals every card.
+  // How far the track overruns the viewport = both the horizontal travel and
+  // (added to one viewport) the scroll distance the pin lasts. Keeping them
+  // equal makes scroll-to-pan feel ~1:1.
   useEffect(() => {
     const measure = () => {
       const track = trackRef.current
       if (!track) return
-      setOverflow(Math.max(0, track.scrollWidth - window.innerWidth + 64))
+      setOverflow(Math.max(0, track.scrollWidth - window.innerWidth))
     }
     measure()
     window.addEventListener('resize', measure)
     return () => window.removeEventListener('resize', measure)
   }, [])
 
-  // Scroll drives the horizontal pan: down → cards advance, up → they rewind.
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] })
+  // The pinned frame stays fixed; scrolling through the tall wrapper maps to a
+  // horizontal translate — the classic sticky/pinned horizontal scroll.
+  const { scrollYProgress } = useScroll({ target: pinRef, offset: ['start start', 'end end'] })
   const x = useTransform(scrollYProgress, [0, 1], [0, -overflow])
 
+  // The card nearest the viewport centre becomes "selected" as it pans through.
   useEffect(() => {
-    return scrollYProgress.on('change', (v) => {
-      setActive(Math.round(Math.min(1, Math.max(0, (v - 0.1) / 0.8)) * (ITEMS.length - 1)))
-    })
-  }, [scrollYProgress])
+    const measureActive = () => {
+      const track = trackRef.current
+      if (!track) return
+      const cards = track.querySelectorAll<HTMLElement>('[data-work-card]')
+      const cx = window.innerWidth / 2
+      let best = 0
+      let bestDist = Infinity
+      cards.forEach((el, i) => {
+        const r = el.getBoundingClientRect()
+        const d = Math.abs(r.left + r.width / 2 - cx)
+        if (d < bestDist) {
+          bestDist = d
+          best = i
+        }
+      })
+      setActive(best)
+    }
+    measureActive()
+    const unsub = x.on('change', measureActive)
+    window.addEventListener('resize', measureActive)
+    return () => {
+      unsub()
+      window.removeEventListener('resize', measureActive)
+    }
+  }, [x])
 
   // Lock body scroll while the popup is open.
   useEffect(() => {
@@ -223,22 +273,40 @@ export function Work() {
   }, [open])
 
   return (
-    <section ref={sectionRef} id="work" className="relative overflow-hidden py-24">
-      <div className="mb-6">
-        <motion.div ref={trackRef} style={{ x }} className="flex w-max gap-8 px-8 will-change-transform">
-          {ITEMS.map((item) => (
-            <Card key={item.slug} item={item} onOpen={() => setOpen(item)} />
-          ))}
-        </motion.div>
+    <section id="work" className="relative">
+      {/* Desktop: pinned horizontal scroll — the screen holds still while the
+          cards slide sideways. */}
+      <div
+        ref={pinRef}
+        className="relative hidden md:block"
+        style={{ height: `calc(100vh + ${overflow}px)` }}
+      >
+        <div className="sticky top-0 flex h-screen flex-col items-center justify-center overflow-hidden">
+          <motion.div ref={trackRef} style={{ x }} className="flex w-max gap-8 px-[8vw] will-change-transform">
+            {ITEMS.map((item, i) => (
+              <Card key={item.slug} item={item} selected={i === active} onOpen={() => setOpen(item)} />
+            ))}
+          </motion.div>
+          {/* progress dots */}
+          <div className="mt-12 flex items-center justify-center gap-1.5">
+            {ITEMS.map((it, i) => (
+              <span
+                key={it.slug}
+                className={`h-[7px] rounded-full transition-all duration-300 ${
+                  i === active ? 'w-5 bg-ink' : 'w-[7px] bg-ink/25'
+                }`}
+              />
+            ))}
+          </div>
+        </div>
       </div>
 
-      {/* progress dots (arrows removed) */}
-      <div className="mt-10 flex items-center justify-center gap-1.5">
-        {ITEMS.map((it, i) => (
-          <span
-            key={it.slug}
-            className={`h-[7px] rounded-full transition-all duration-300 ${i === active ? 'w-5 bg-ink' : 'w-[7px] bg-ink/25'}`}
-          />
+      {/* Mobile: native horizontal swipe (no scroll-jacking on touch). */}
+      <div className="flex snap-x snap-mandatory gap-5 overflow-x-auto px-6 py-16 md:hidden [scrollbar-width:none]">
+        {ITEMS.map((item) => (
+          <div key={item.slug} className="snap-center">
+            <Card item={item} selected={false} onOpen={() => setOpen(item)} />
+          </div>
         ))}
       </div>
 

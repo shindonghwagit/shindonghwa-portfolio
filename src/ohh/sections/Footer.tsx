@@ -47,7 +47,20 @@ export function Footer() {
               <ul className="flex flex-col gap-2.5">
                 {c.links.map((l) => (
                   <li key={l}>
-                    <a href="#" className="text-[15px] text-white/75 transition-colors hover:text-white">{l}</a>
+                    <a
+                      href="#"
+                      className="group relative inline-block w-fit text-[15px] text-white/75 transition-colors hover:text-white"
+                    >
+                      {l}
+                      {/* Figma selection box + corner handles on hover */}
+                      <span className="pointer-events-none absolute -inset-x-2 -inset-y-1 rounded-[3px] border border-blue opacity-0 transition-opacity group-hover:opacity-100" />
+                      {['-left-2 -top-1', '-right-2 -top-1', '-bottom-1 -left-2', '-bottom-1 -right-2'].map((p) => (
+                        <span
+                          key={p}
+                          className={`pointer-events-none absolute ${p} size-[6px] -translate-x-1/2 -translate-y-1/2 rounded-[1px] border border-blue bg-white opacity-0 transition-opacity group-hover:opacity-100`}
+                        />
+                      ))}
+                    </a>
                   </li>
                 ))}
               </ul>
