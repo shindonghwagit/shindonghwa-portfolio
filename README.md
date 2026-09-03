@@ -1,15 +1,18 @@
-# ohhmydesign — Donghwa Shin
+# Donghwa Shin — Portfolio
+
+![Donghwa Shin — Portfolio](public/preview.jpg)
 
 **Live:** https://shindonghwa-portfolio.vercel.app
 
-A bright, sky-blue studio landing page — a faithful reproduction of the
-ohhmydesign.com design, rebuilt from Figma and wired up with real interactions.
+A bright, sky-blue single-page portfolio — playful, interaction-rich, and built
+from scratch: an intro loader, a cursor that trails a "You" tag, reactive
+headline letters, a pinned horizontal project scroll, and per-project popups.
 
 ## Stack
 
 - React 19 + TypeScript + Vite 8
 - [Tailwind CSS v4](https://tailwindcss.com) (`@tailwindcss/vite`)
-- [motion](https://motion.dev) — intro loader, scroll reveals, marquee, lever, modals
+- [motion](https://motion.dev) — intro loader, scroll reveals, pinned scroll, popups
 - Fonts: Hanken Grotesk, Space Mono, Bricolage Grotesque, Caveat
 
 ## Run
@@ -25,16 +28,16 @@ npm run preview  # serve the production build
 
 ```
 src/
-  main.tsx               renders <OhhLanding />
+  main.tsx               renders the landing page
   types.ts               Project type
   data/projects.ts       project entries (used by the Work popups)
   ohh/
     OhhLanding.tsx        page composition
-    ohh.css               Tailwind + tokens + keyframes (scoped under .ohh)
+    ohh.css               Tailwind + design tokens + keyframes
     components/           Topbar, Ruler, Clouds, Cursors, IntroLoader,
-                          ChatWidget, bits, useClock
-    sections/             Hero, Work, About, Process, Services, Difference,
-                          Testimonials, Cta, Pricing, Faq, DropFun, Footer
+                          ChatWidget, ReactiveText, bits, useClock
+    sections/             Hero, Work, About, Experience,
+                          Certifications, Cta, Footer
 ```
 
 ## Contact
