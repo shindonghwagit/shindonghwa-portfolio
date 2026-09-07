@@ -25,6 +25,24 @@
   color: var(--color-ink);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* on-sky text colour — overridden by the time-of-day sky (light at night) */
+  --pf-sky-ink: #14202b;
+  --pf-sky-ink-soft: #4a6173;
+}
+
+/* text that sits directly on the sky follows the time of day */
+.pf-on-sky {
+  color: var(--pf-sky-ink);
+  transition: color 1s ease;
+}
+.pf-on-sky-soft {
+  color: var(--pf-sky-ink-soft);
+  transition: color 1s ease;
+}
+
+@keyframes pf-twinkle {
+  0%, 100% { opacity: 0.25; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1); }
 }
 
 .pf .font-mono {

@@ -55,7 +55,7 @@ export function Hero() {
         </a>
         <a
           href="#work"
-          className="rounded-[10px] border border-ink px-[22px] py-3 text-[14px] font-bold text-ink transition-colors hover:bg-ink hover:text-white"
+          className="pf-on-sky rounded-[10px] border border-[color:var(--pf-sky-ink)] px-[22px] py-3 text-[14px] font-bold transition-colors hover:bg-ink hover:text-white"
         >
           See the work
         </a>
@@ -63,16 +63,16 @@ export function Hero() {
 
       {/* Corner mono labels */}
       <div className="pointer-events-none absolute bottom-6 left-8 hidden text-left font-mono text-[11px] uppercase tracking-[0.99px] md:block">
-        <p className="font-bold text-ink">based in seoul</p>
-        <p className="text-ink-soft">building end to end</p>
+        <p className="pf-on-sky font-bold">based in seoul</p>
+        <p className="pf-on-sky-soft">building end to end</p>
       </div>
       <div className="pointer-events-none absolute bottom-6 right-8 hidden text-right font-mono text-[11px] uppercase tracking-[0.99px] md:block">
-        <p className="font-bold text-ink">open to work</p>
-        <p className="text-ink-soft">2026</p>
+        <p className="pf-on-sky font-bold">open to work</p>
+        <p className="pf-on-sky-soft">2026</p>
       </div>
 
       {/* LIVE clock */}
-      <div className="pointer-events-none absolute left-1/2 top-24 flex -translate-x-1/2 items-center gap-2 font-mono text-[11px] font-bold uppercase tracking-[1px] text-ink">
+      <div className="pf-on-sky pointer-events-none absolute left-1/2 top-24 flex -translate-x-1/2 items-center gap-2 font-mono text-[11px] font-bold uppercase tracking-[1px]">
         <span className="size-1.5 animate-pulse rounded-full bg-brand" />
         LIVE · {clock}
       </div>

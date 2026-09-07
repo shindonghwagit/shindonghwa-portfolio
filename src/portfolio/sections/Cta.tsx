@@ -21,7 +21,7 @@ export function Cta() {
         </span>
       </div>
 
-      <p className="mx-auto mt-24 max-w-[470px] text-[19px] leading-[28.5px] text-ink">
+      <p className="pf-on-sky mx-auto mt-24 max-w-[470px] text-[19px] leading-[28.5px]">
         It's <span className="font-bold">{clock}</span> in Seoul. Got a project, a question, or just want to say
         hi? Drop me a line — I'll get back.
       </p>
@@ -37,7 +37,7 @@ export function Cta() {
           href="https://github.com/shindonghwagit"
           target="_blank"
           rel="noreferrer"
-          className="border-b-2 border-ink pb-0.5 text-[16px] font-bold text-ink"
+          className="pf-on-sky border-b-2 border-[color:var(--pf-sky-ink)] pb-0.5 text-[16px] font-bold"
         >
           or find me on GitHub
         </a>

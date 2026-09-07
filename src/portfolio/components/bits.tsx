@@ -20,7 +20,7 @@ export function SectionHead({
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-80px' }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="font-display text-[clamp(40px,7vw,78px)] font-bold uppercase leading-[0.93] tracking-[-1.5px] text-ink"
+        className="pf-on-sky font-display text-[clamp(40px,7vw,78px)] font-bold uppercase leading-[0.93] tracking-[-1.5px]"
       >
         {typeof title === 'string' ? <ReactiveText text={title} /> : title}
       </motion.h2>

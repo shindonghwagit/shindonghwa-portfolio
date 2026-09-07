@@ -21,9 +21,13 @@ function Cloud({ w }: { w: number }) {
   )
 }
 
-export function Clouds() {
+export function Clouds({ opacity = 1 }: { opacity?: number }) {
   return (
-    <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden>
+    <div
+      className="pointer-events-none absolute inset-0 z-0 overflow-hidden transition-opacity duration-1000"
+      style={{ opacity }}
+      aria-hidden
+    >
       {CLOUDS.map((c, i) => (
         <div
           key={i}
