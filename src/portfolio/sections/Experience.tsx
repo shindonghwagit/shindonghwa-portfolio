@@ -15,7 +15,7 @@ type Entry = {
 const TIMELINE: Entry[] = [
   {
     tag: 'Now',
-    title: 'AI Lab',
+    title: 'AI CS Lab',
     sub: 'Soonchunhyang University',
     body: 'Training models and turning them into things people can actually use — from raw data to a served ONNX endpoint.',
     chips: ['PyTorch', 'ONNX', 'FastAPI'],
@@ -85,7 +85,7 @@ export function Experience() {
               </span>
 
               {/* card */}
-              <div className="ohh-cell flex-1 bg-white p-5 md:p-6">
+              <div className="pf-cell flex-1 bg-white p-5 md:p-6">
                 <div className="mb-2 flex flex-wrap items-center gap-2">
                   <span
                     className={`rounded-full px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[1px] ${

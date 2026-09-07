@@ -22,7 +22,7 @@ export function Hero() {
       >
         <ParticleHeadline
           lines={HEADLINE}
-          src="/assets/ohh/hero/impossible.png"
+          src="/assets/portfolio/hero/impossible.png"
           className="mx-auto aspect-[1080/480] w-full"
         />
       </motion.div>

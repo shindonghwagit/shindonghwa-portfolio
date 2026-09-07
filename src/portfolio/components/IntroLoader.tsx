@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 
-/** Full-screen intro: the OHHMYDESIGN wordmark assembles while a counter
+/** Full-screen intro: the DONGHWASHIN wordmark assembles while a counter
  *  ticks 0 → 100%, then the curtain lifts to reveal the page. */
 export function IntroLoader() {
   const [pct, setPct] = useState(0)
@@ -28,7 +28,7 @@ export function IntroLoader() {
     <AnimatePresence>
       {!done && (
         <motion.div
-          className="ohh-sky fixed inset-0 z-[100] flex flex-col items-center justify-center"
+          className="pf-sky fixed inset-0 z-[100] flex flex-col items-center justify-center"
           exit={{ y: '-100%' }}
           transition={{ duration: 0.75, ease: [0.76, 0, 0.24, 1] }}
         >

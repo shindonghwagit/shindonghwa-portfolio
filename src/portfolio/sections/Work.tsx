@@ -47,7 +47,7 @@ function Card({ item, onOpen, selected }: { item: WorkItem; onOpen: () => void; 
           (p) => (
             <span
               key={p}
-              className={`ohh-handle absolute ${p} z-10 transition-opacity group-hover:opacity-100 ${
+              className={`pf-handle absolute ${p} z-10 transition-opacity group-hover:opacity-100 ${
                 selected ? 'opacity-100' : 'opacity-0'
               }`}
             />
@@ -281,14 +281,14 @@ export function Work() {
         className="relative hidden md:block"
         style={{ height: `calc(100vh + ${overflow}px)` }}
       >
-        <div className="sticky top-0 flex h-screen flex-col items-center justify-center overflow-hidden">
+        <div className="sticky top-0 flex h-screen flex-col justify-center overflow-hidden">
           <motion.div ref={trackRef} style={{ x }} className="flex w-max gap-8 px-[8vw] will-change-transform">
             {ITEMS.map((item, i) => (
               <Card key={item.slug} item={item} selected={i === active} onOpen={() => setOpen(item)} />
             ))}
           </motion.div>
           {/* progress dots */}
-          <div className="mt-12 flex items-center justify-center gap-1.5">
+          <div className="mt-12 flex w-full items-center justify-center gap-1.5">
             {ITEMS.map((it, i) => (
               <span
                 key={it.slug}

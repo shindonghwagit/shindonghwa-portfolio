@@ -15,7 +15,7 @@ export function Certifications() {
         <div className="relative mx-auto max-w-[820px] rounded-[18px] border border-dashed border-ink/25 bg-white/50 p-14 text-center backdrop-blur">
           {['-left-[5px] -top-[5px]', '-right-[5px] -top-[5px]', '-bottom-[5px] -left-[5px]', '-bottom-[5px] -right-[5px]'].map(
             (p) => (
-              <span key={p} className={`ohh-handle absolute ${p}`} />
+              <span key={p} className={`pf-handle absolute ${p}`} />
             ),
           )}
           <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-full bg-ink/[0.05] text-2xl">🎖️</div>
@@ -25,7 +25,7 @@ export function Certifications() {
       ) : (
         <div className="mx-auto grid max-w-[900px] gap-4 md:grid-cols-2">
           {CERTS.map((c) => (
-            <div key={c.name} className="ohh-cell flex items-center gap-4 bg-white p-6">
+            <div key={c.name} className="pf-cell flex items-center gap-4 bg-white p-6">
               <span className="flex size-12 shrink-0 items-center justify-center rounded-[12px] bg-brand/10 text-2xl">🎖️</span>
               <div className="flex-1">
                 <p className="font-display text-[18px] font-bold text-ink">{c.name}</p>

@@ -28,14 +28,14 @@ npm run preview  # serve the production build
 
 ```
 src/
-  main.tsx               renders the landing page
+  main.tsx               renders <Portfolio />
   types.ts               Project type
   data/projects.ts       project entries (used by the Work popups)
-  ohh/
-    OhhLanding.tsx        page composition
-    ohh.css               Tailwind + design tokens + keyframes
+  portfolio/
+    Portfolio.tsx         page composition
+    portfolio.css         Tailwind + design tokens + keyframes
     components/           Topbar, Ruler, Clouds, Cursors, IntroLoader,
-                          ChatWidget, ReactiveText, bits, useClock
+                          ChatWidget, ParticleHeadline, ReactiveText, bits, useClock
     sections/             Hero, Work, About, Experience,
                           Certifications, Cta, Footer
 ```

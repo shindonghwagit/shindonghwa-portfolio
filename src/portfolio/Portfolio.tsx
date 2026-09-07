@@ -1,4 +1,4 @@
-import './ohh.css'
+import './portfolio.css'
 import { IntroLoader } from './components/IntroLoader'
 import { Topbar } from './components/Topbar'
 import { Ruler } from './components/Ruler'
@@ -13,9 +13,9 @@ import { Certifications } from './sections/Certifications'
 import { Cta } from './sections/Cta'
 import { Footer } from './sections/Footer'
 
-export function OhhLanding() {
+export function Portfolio() {
   return (
-    <div className="ohh ohh-sky ohh-grain relative min-h-screen overflow-x-clip">
+    <div className="pf pf-sky pf-grain relative min-h-screen overflow-x-clip">
       <IntroLoader />
       <Clouds />
       <Ruler />

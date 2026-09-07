@@ -32,13 +32,13 @@ export function Clouds() {
             top: c.top,
             opacity: c.op,
             filter: `blur(${c.blur}px)`,
-            animation: `ohh-drift ${c.dur} linear ${c.delay} infinite`,
+            animation: `pf-drift ${c.dur} linear ${c.delay} infinite`,
           }}
         >
           <Cloud w={c.size} />
         </div>
       ))}
-      <style>{`@keyframes ohh-drift { from { transform: translateX(0); } to { transform: translateX(190vw); } }`}</style>
+      <style>{`@keyframes pf-drift { from { transform: translateX(0); } to { transform: translateX(190vw); } }`}</style>
     </div>
   )
 }

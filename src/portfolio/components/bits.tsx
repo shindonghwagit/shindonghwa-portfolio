@@ -40,7 +40,7 @@ export function CellLabel({ children }: { children: ReactNode }) {
 /** Blue Figma "layer tab" that slides up out of a cell on hover. */
 export function LayerTab({ label }: { label: string }) {
   return (
-    <span className="ohh-tab flex items-center gap-2 rounded-t-[7px] bg-blue px-2.5 py-1 shadow-[0px_-6px_16px_-8px_rgba(13,153,255,0.7)]">
+    <span className="pf-tab flex items-center gap-2 rounded-t-[7px] bg-blue px-2.5 py-1 shadow-[0px_-6px_16px_-8px_rgba(13,153,255,0.7)]">
       <i className="size-2 rounded-[2px] bg-white" />
       <span className="font-mono text-[10.5px] font-bold tracking-[0.42px] text-white">{label}</span>
     </span>
