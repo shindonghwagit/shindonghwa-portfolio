@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 
 type P = { x: number; y: number; hx: number; hy: number; vx: number; vy: number; c: string }
 
-const FALLBACK_COLORS = ['#f0531c', '#f0531c', '#e8431a', '#ff6a2f', '#d93c12']
+const FALLBACK_COLORS = ['#f0531c', '#f0531c', '#f0531c', '#e8431a', '#ff6a2f']
 
 /** A sampled pixel counts as "text" (not sky) when it leans warm — the orange
  *  particles have r noticeably above b. The blue gradient background is cool
@@ -142,7 +142,7 @@ export function ParticleHeadline({
         p.x += p.vx
         p.y += p.vy
         ctx.fillStyle = p.c
-        ctx.fillRect(p.x, p.y, 3, 3)
+        ctx.fillRect(p.x, p.y, 4, 4)
       }
       raf = requestAnimationFrame(step)
     }
