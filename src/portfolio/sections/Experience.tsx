@@ -8,6 +8,7 @@ type Entry = {
   body: string
   chips: string[]
   icon: string
+  img?: string
   accent?: boolean
 }
 
@@ -20,6 +21,7 @@ const TIMELINE: Entry[] = [
     body: 'Training models and turning them into things people can actually use — from raw data to a served ONNX endpoint.',
     chips: ['PyTorch', 'ONNX', 'FastAPI'],
     icon: '🤖',
+    img: '/assets/portfolio/logos/aics-cube.png',
     accent: true,
   },
   {
@@ -77,11 +79,15 @@ export function Experience() {
             >
               {/* node */}
               <span
-                className={`relative z-10 flex size-12 shrink-0 items-center justify-center rounded-full border text-[18px] shadow-sm ${
-                  t.accent ? 'border-brand bg-brand/10' : 'border-ink/10 bg-white'
+                className={`relative z-10 flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-full border text-[18px] shadow-sm ${
+                  t.accent ? 'border-brand bg-white' : 'border-ink/10 bg-white'
                 }`}
               >
-                {t.icon}
+                {t.img ? (
+                  <img src={t.img} alt={t.title} className="size-8 object-contain" />
+                ) : (
+                  t.icon
+                )}
               </span>
 
               {/* card */}
