@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 
 type P = { x: number; y: number; hx: number; hy: number; vx: number; vy: number; c: string }
 
-const FALLBACK_COLORS = ['#f0531c', '#f0531c', '#ff6a2f', '#e8431a', '#ff8a4f']
+const FALLBACK_COLORS = ['#f0531c', '#f0531c', '#e8431a', '#ff6a2f', '#d93c12']
 
 /** A sampled pixel counts as "text" (not sky) when it leans warm — the orange
  *  particles have r noticeably above b. The blue gradient background is cool
@@ -45,7 +45,7 @@ export function ParticleHeadline({
     // letter. This fills the original (dotted) letterforms into legible shapes
     // instead of missing the gaps between the source image's own dots.
     const sample = (data: Uint8ClampedArray, W: number, H: number, fromImage: boolean) => {
-      const gap = W < 600 ? 5 : 4
+      const gap = W < 600 ? 4 : 3
       particles = []
       for (let cy = 0; cy < H; cy += gap) {
         for (let cx = 0; cx < W; cx += gap) {
@@ -142,7 +142,7 @@ export function ParticleHeadline({
         p.x += p.vx
         p.y += p.vy
         ctx.fillStyle = p.c
-        ctx.fillRect(p.x, p.y, 2.6, 2.6)
+        ctx.fillRect(p.x, p.y, 3, 3)
       }
       raf = requestAnimationFrame(step)
     }

@@ -68,8 +68,11 @@ export type SkyTheme = {
  *  state. Updates every 30s so the sky drifts with real time. */
 export function useSkyTheme(): SkyTheme {
   const [hour, setHour] = useState(() => {
-    const q = Number(new URLSearchParams(window.location.search).get('sky'))
-    if (!Number.isNaN(q) && q >= 0 && q <= 24) return q
+    const params = new URLSearchParams(window.location.search)
+    if (params.has('sky')) {
+      const q = Number(params.get('sky'))
+      if (!Number.isNaN(q) && q >= 0 && q <= 24) return q
+    }
     const d = new Date()
     return d.getHours() + d.getMinutes() / 60
   })
