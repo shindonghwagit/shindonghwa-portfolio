@@ -18,7 +18,7 @@ const ITEMS: WorkItem[] = [
   { slug: 'cvdlens', name: 'CVDLens', img: '/og_cover.jpg', fit: 'contain', tags: ['AI', 'PyTorch', 'Next.js'], key: 'CVDLens' },
   { slug: 'prismdesign', name: 'PrismDesign', img: '/assets1.png', fit: 'contain', tags: ['React', 'Canvas', 'ReactFlow'], key: 'PrismDesign' },
   { slug: 'ghfilter', name: 'Country Filter', img: '/top-repositories.png', fit: 'cover', tags: ['Chrome', 'JS'], key: 'GitHub Country Filter' },
-  { slug: 'farmers', name: "Farmer's Market", img: '/screenshot.png', fit: 'cover', tags: ['Spring', 'SSE', 'OAuth2'], key: "Farmer's Market" },
+  { slug: 'farmers', name: "Farmer's Market", img: '/farmers-market.jpg', fit: 'cover', tags: ['Spring', 'SSE', 'OAuth2'], key: "Farmer's Market" },
 ]
 
 const BY_TITLE: Record<string, Project> = Object.fromEntries(projects.map((p) => [p.title, p]))
