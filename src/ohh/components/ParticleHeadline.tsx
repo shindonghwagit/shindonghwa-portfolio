@@ -2,13 +2,29 @@ import { useEffect, useRef } from 'react'
 
 type P = { x: number; y: number; hx: number; hy: number; vx: number; vy: number; c: string }
 
-const COLORS = ['#f0531c', '#f0531c', '#f0531c', '#ff7a45', '#e8431a', '#14202b'] // vivid orange, a touch of ink
+const FALLBACK_COLORS = ['#f0531c', '#f0531c', '#ff6a2f', '#e8431a', '#ff8a4f']
 
-/** Interactive particle text: the headline is rasterised to an offscreen
- *  canvas, sampled into particles, then each particle springs to its home
- *  position and is repelled by the pointer. No baked background = no box, and
- *  the letters scatter/flow around the cursor. */
-export function ParticleHeadline({ lines, className = '' }: { lines: string[]; className?: string }) {
+/** A sampled pixel counts as "text" (not sky) when it leans warm — the orange
+ *  particles have r noticeably above b. The blue gradient background is cool
+ *  (b > r), so it's excluded. */
+function isTextPixel(r: number, b: number) {
+  return r > b + 14
+}
+
+/** Interactive particle text. When `src` is given, particles are sampled from
+ *  that image so the original letterforms/colours are reproduced exactly (and
+ *  the baked background is filtered out — no box). Otherwise the text is drawn
+ *  with a font as a fallback. Particles spring home and are repelled by the
+ *  pointer, so the letters scatter and flow around the cursor. */
+export function ParticleHeadline({
+  lines,
+  src,
+  className = '',
+}: {
+  lines: string[]
+  src?: string
+  className?: string
+}) {
   const wrapRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
@@ -23,6 +39,42 @@ export function ParticleHeadline({ lines, className = '' }: { lines: string[]; c
     const mouse = { x: -9999, y: -9999 }
     let particles: P[] = []
     let raf = 0
+    let img: HTMLImageElement | null = null
+
+    // Cell-based "OR" sampling: one particle per gap×gap cell that overlaps a
+    // letter. This fills the original (dotted) letterforms into legible shapes
+    // instead of missing the gaps between the source image's own dots.
+    const sample = (data: Uint8ClampedArray, W: number, H: number, fromImage: boolean) => {
+      const gap = W < 600 ? 5 : 4
+      particles = []
+      for (let cy = 0; cy < H; cy += gap) {
+        for (let cx = 0; cx < W; cx += gap) {
+          // The image only defines the letter SHAPE; colours come from the vivid
+          // palette so antialiased edges don't mute the orange.
+          let hit = false
+          for (let y = cy; y < cy + gap && y < H && !hit; y++) {
+            for (let x = cx; x < cx + gap && x < W; x++) {
+              const idx = (y * W + x) * 4
+              if (data[idx + 3] < 128) continue
+              if (!fromImage || isTextPixel(data[idx], data[idx + 2])) {
+                hit = true
+                break
+              }
+            }
+          }
+          if (!hit) continue
+          particles.push({
+            x: Math.random() * W,
+            y: Math.random() * H,
+            hx: cx + gap / 2,
+            hy: cy + gap / 2,
+            vx: 0,
+            vy: 0,
+            c: FALLBACK_COLORS[(Math.random() * FALLBACK_COLORS.length) | 0],
+          })
+        }
+      }
+    }
 
     const build = () => {
       const rect = wrap.getBoundingClientRect()
@@ -34,44 +86,36 @@ export function ParticleHeadline({ lines, className = '' }: { lines: string[]; c
       canvas.style.height = `${H}px`
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
 
-      // rasterise the text offscreen
       const off = document.createElement('canvas')
       off.width = W
       off.height = H
       const octx = off.getContext('2d')
       if (!octx) return
-      octx.fillStyle = '#fff'
-      octx.textAlign = 'center'
-      octx.textBaseline = 'middle'
-      let fs = Math.min((H / lines.length) * 0.92, W * 0.17)
-      const setFont = (s: number) => (octx.font = `800 ${s}px "Bricolage Grotesque", system-ui, sans-serif`)
-      setFont(fs)
-      const widest = Math.max(...lines.map((l) => octx.measureText(l).width))
-      if (widest > W * 0.98) {
-        fs *= (W * 0.98) / widest
-        setFont(fs)
-      }
-      const lineH = fs * 0.98
-      const startY = H / 2 - (lineH * lines.length) / 2 + lineH / 2
-      lines.forEach((l, i) => octx.fillText(l, W / 2, startY + i * lineH))
 
-      const data = octx.getImageData(0, 0, W, H).data
-      const gap = W < 600 ? 5 : 4
-      particles = []
-      for (let y = 0; y < H; y += gap) {
-        for (let x = 0; x < W; x += gap) {
-          if (data[(y * W + x) * 4 + 3] > 128) {
-            particles.push({
-              x: Math.random() * W,
-              y: Math.random() * H,
-              hx: x,
-              hy: y,
-              vx: 0,
-              vy: 0,
-              c: COLORS[(Math.random() * COLORS.length) | 0],
-            })
-          }
+      if (img && img.complete && img.naturalWidth) {
+        // draw the source image "contain"-fitted, then sample its warm pixels
+        const scale = Math.min(W / img.naturalWidth, H / img.naturalHeight)
+        const dw = img.naturalWidth * scale
+        const dh = img.naturalHeight * scale
+        octx.drawImage(img, (W - dw) / 2, (H - dh) / 2, dw, dh)
+        sample(octx.getImageData(0, 0, W, H).data, W, H, true)
+      } else {
+        // font fallback
+        octx.fillStyle = '#fff'
+        octx.textAlign = 'center'
+        octx.textBaseline = 'middle'
+        let fs = Math.min((H / lines.length) * 0.92, W * 0.17)
+        const setFont = (s: number) => (octx.font = `800 ${s}px "Bricolage Grotesque", system-ui, sans-serif`)
+        setFont(fs)
+        const widest = Math.max(...lines.map((l) => octx.measureText(l).width))
+        if (widest > W * 0.98) {
+          fs *= (W * 0.98) / widest
+          setFont(fs)
         }
+        const lineH = fs * 0.98
+        const startY = H / 2 - (lineH * lines.length) / 2 + lineH / 2
+        lines.forEach((l, i) => octx.fillText(l, W / 2, startY + i * lineH))
+        sample(octx.getImageData(0, 0, W, H).data, W, H, false)
       }
     }
 
@@ -98,7 +142,7 @@ export function ParticleHeadline({ lines, className = '' }: { lines: string[]; c
         p.x += p.vx
         p.y += p.vy
         ctx.fillStyle = p.c
-        ctx.fillRect(p.x, p.y, 2, 2)
+        ctx.fillRect(p.x, p.y, 2.6, 2.6)
       }
       raf = requestAnimationFrame(step)
     }
@@ -115,10 +159,21 @@ export function ParticleHeadline({ lines, className = '' }: { lines: string[]; c
 
     let cancelled = false
     const start = async () => {
-      try {
-        await (document as Document & { fonts?: { ready: Promise<unknown> } }).fonts?.ready
-      } catch {
-        /* fonts API unavailable — fall back to system font */
+      if (src) {
+        img = new Image()
+        img.src = src
+        try {
+          await img.decode()
+        } catch {
+          img = null // fall back to font
+        }
+      }
+      if (!img) {
+        try {
+          await (document as Document & { fonts?: { ready: Promise<unknown> } }).fonts?.ready
+        } catch {
+          /* fonts API unavailable */
+        }
       }
       if (cancelled) return
       build()
@@ -138,7 +193,7 @@ export function ParticleHeadline({ lines, className = '' }: { lines: string[]; c
       window.removeEventListener('pointerleave', onLeave)
       ro.disconnect()
     }
-  }, [lines])
+  }, [lines, src])
 
   return (
     <div ref={wrapRef} className={className}>

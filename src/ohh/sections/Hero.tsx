@@ -20,7 +20,11 @@ export function Hero() {
         transition={{ delay: 0.2, duration: 0.9 }}
         className="w-full max-w-[1080px]"
       >
-        <ParticleHeadline lines={HEADLINE} className="mx-auto aspect-[1080/430] w-full" />
+        <ParticleHeadline
+          lines={HEADLINE}
+          src="/assets/ohh/hero/impossible.png"
+          className="mx-auto aspect-[1080/480] w-full"
+        />
       </motion.div>
 
       {/* mono hint */}
