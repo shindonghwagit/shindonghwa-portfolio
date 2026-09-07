@@ -41,26 +41,43 @@ export function ParticleHeadline({
     let raf = 0
     let img: HTMLImageElement | null = null
 
-    // Cell-based "OR" sampling: one particle per gap×gap cell that overlaps a
-    // letter. This fills the original (dotted) letterforms into legible shapes
-    // instead of missing the gaps between the source image's own dots.
+    // Fine cell sampling: one particle per gap×gap cell that overlaps a letter,
+    // coloured from the source image's own pixels (its original orange/salmon
+    // mix) so the restored headline matches the original impossible.png look.
     const sample = (data: Uint8ClampedArray, W: number, H: number, fromImage: boolean) => {
-      const gap = W < 600 ? 4 : 3
+      const gap = W < 600 ? 3 : 2
       particles = []
       for (let cy = 0; cy < H; cy += gap) {
         for (let cx = 0; cx < W; cx += gap) {
-          // The image only defines the letter SHAPE; colours come from the vivid
-          // palette so antialiased edges don't mute the orange.
+          // pick the most vivid (orange) pixel in the cell for both hit + colour
           let hit = false
-          for (let y = cy; y < cy + gap && y < H && !hit; y++) {
+          let cr = 240
+          let cg = 83
+          let cb = 28
+          let bestWarm = -1e9
+          for (let y = cy; y < cy + gap && y < H; y++) {
             for (let x = cx; x < cx + gap && x < W; x++) {
               const idx = (y * W + x) * 4
               if (data[idx + 3] < 128) continue
-              if (!fromImage || isTextPixel(data[idx], data[idx + 2])) {
+              const r = data[idx]
+              const g = data[idx + 1]
+              const b = data[idx + 2]
+              if (fromImage) {
+                if (!isTextPixel(r, b)) continue
+                const warm = r - b
+                if (warm > bestWarm) {
+                  bestWarm = warm
+                  cr = r
+                  cg = g
+                  cb = b
+                }
+                hit = true
+              } else {
                 hit = true
                 break
               }
             }
+            if (hit && !fromImage) break
           }
           if (!hit) continue
           particles.push({
@@ -70,7 +87,7 @@ export function ParticleHeadline({
             hy: cy + gap / 2,
             vx: 0,
             vy: 0,
-            c: FALLBACK_COLORS[(Math.random() * FALLBACK_COLORS.length) | 0],
+            c: fromImage ? `rgb(${cr},${cg},${cb})` : FALLBACK_COLORS[(Math.random() * FALLBACK_COLORS.length) | 0],
           })
         }
       }
@@ -142,7 +159,7 @@ export function ParticleHeadline({
         p.x += p.vx
         p.y += p.vy
         ctx.fillStyle = p.c
-        ctx.fillRect(p.x, p.y, 4, 4)
+        ctx.fillRect(p.x, p.y, 2, 2)
       }
       raf = requestAnimationFrame(step)
     }
