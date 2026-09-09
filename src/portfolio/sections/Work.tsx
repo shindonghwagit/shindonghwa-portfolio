@@ -19,6 +19,7 @@ const ITEMS: WorkItem[] = [
   { slug: 'prismdesign', name: 'PrismDesign', img: '/assets1.png', fit: 'contain', tags: ['React', 'Canvas', 'ReactFlow'], key: 'PrismDesign' },
   { slug: 'ghfilter', name: 'Country Filter', img: '/top-repositories.png', fit: 'cover', tags: ['Chrome', 'JS'], key: 'GitHub Country Filter' },
   { slug: 'farmers', name: "Farmer's Market", img: '/farmers-market.jpg', fit: 'cover', tags: ['Spring', 'SSE', 'OAuth2'], key: "Farmer's Market" },
+  { slug: 'aics', name: 'AICS WEB', img: '/aics.png', fit: 'cover', tags: ['Node.js', 'Express', 'PostgreSQL'], key: 'AICS' },
 ]
 
 const BY_TITLE: Record<string, Project> = Object.fromEntries(projects.map((p) => [p.title, p]))
@@ -192,16 +193,31 @@ function ProjectWindow({ item, onClose }: { item: WorkItem; onClose: () => void 
               </div>
             ) : null}
 
-            {d?.github && (
-              <a
-                href={d.github}
-                target="_blank"
-                rel="noreferrer"
-                className="mt-1 flex w-fit items-center gap-2.5 rounded-[10px] bg-ink px-5 py-3 text-[14px] font-bold text-white transition-transform hover:-translate-y-0.5"
-              >
-                View on GitHub
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-              </a>
+            {(d?.live || d?.github) && (
+              <div className="mt-1 flex flex-wrap gap-2.5">
+                {d?.live && (
+                  <a
+                    href={d.live}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex w-fit items-center gap-2.5 rounded-[10px] bg-brand px-5 py-3 text-[14px] font-bold text-white transition-transform hover:-translate-y-0.5"
+                  >
+                    Visit site
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                  </a>
+                )}
+                {d?.github && (
+                  <a
+                    href={d.github}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex w-fit items-center gap-2.5 rounded-[10px] bg-ink px-5 py-3 text-[14px] font-bold text-white transition-transform hover:-translate-y-0.5"
+                  >
+                    View on GitHub
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                  </a>
+                )}
+              </div>
             )}
           </div>
         </div>

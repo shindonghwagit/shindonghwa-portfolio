@@ -41,6 +41,7 @@ export const projects: Project[] = [
       ],
       stack: ['Python', 'PyTorch', 'MobileNetV2+U-Net', 'ONNX', 'Next.js', 'FastAPI', 'PostgreSQL'],
       github: GH,
+      live: 'https://cvd-lens.vercel.app/',
     },
   },
   {
@@ -61,6 +62,7 @@ export const projects: Project[] = [
       ],
       stack: ['React', 'TypeScript', 'ReactFlow', 'Canvas 2D', 'Express', 'MediaPipe'],
       github: GH,
+      live: 'https://prismdesign-web.vercel.app',
     },
   },
   {
@@ -80,6 +82,27 @@ export const projects: Project[] = [
       ],
       stack: ['JavaScript', 'Chrome Extension'],
       github: GH,
+    },
+  },
+  {
+    n: '05',
+    title: 'AICS',
+    kind: 'Backend · Team',
+    desc: 'Backend and data layer for the AI CS Lab site — 25+ table schema, five public REST APIs, and Supabase/Render deployment.',
+    imgs: ['/aics.png'],
+    detail: {
+      year: '2025',
+      overview:
+        'AI CS Lab(AICS) 연구실 소개 웹사이트의 백엔드·데이터 계층. 연구 관심 분야(금융 시계열 예측, 비전 AI, 접근성·설명가능 AI), 소속 연구원, 논문, 파트너십, 이벤트 정보를 관리·제공하는 서버와 데이터베이스를 설계·구현했다.',
+      role: '백엔드/데이터 설계 및 API 개발 담당 — DB 스키마 설계, 공개 API 구현, Supabase 연동 및 배포',
+      highlights: [
+        '25개 이상 테이블로 구성된 PostgreSQL 스키마 설계 (연구원·논문·파트너·이벤트·연구 분야)',
+        'members·publications·partners·events·research 등 5종 이상의 공개 REST API 설계·구현',
+        'Supabase 연동 및 Render 배포 트러블슈팅 — IPv6 Direct Connection 이슈를 Session Pooler로 해결',
+      ],
+      stack: ['Node.js', 'Express', 'PostgreSQL', 'Supabase', 'Render'],
+      github: GH,
+      live: 'https://aics-web-seven.vercel.app',
     },
   },
 ]
