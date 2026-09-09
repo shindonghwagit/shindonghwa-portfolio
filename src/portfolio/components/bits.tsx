@@ -7,10 +7,13 @@ export function SectionHead({
   over,
   title,
   className = '',
+  accent,
 }: {
   over: string
   title: ReactNode
   className?: string
+  /** letter indices (spaces ignored) to paint in the brand colour */
+  accent?: number[]
 }) {
   return (
     <div className={`flex flex-col items-center gap-3 text-center ${className}`}>
@@ -22,7 +25,7 @@ export function SectionHead({
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         className="pf-on-sky font-display text-[clamp(40px,7vw,78px)] font-bold uppercase leading-[0.93] tracking-[-1.5px]"
       >
-        {typeof title === 'string' ? <ReactiveText text={title} /> : title}
+        {typeof title === 'string' ? <ReactiveText text={title} strength={1.6} accent={accent} /> : title}
       </motion.h2>
     </div>
   )

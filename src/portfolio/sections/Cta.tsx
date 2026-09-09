@@ -6,14 +6,7 @@ export function Cta() {
 
   return (
     <section id="contact" className="relative mx-auto max-w-[1280px] px-6 pb-8 pt-28 text-center">
-      <SectionHead
-        over="say hi"
-        title={
-          <>
-            Let's <span className="text-brand">build.</span>
-          </>
-        }
-      />
+      <SectionHead over="say hi" title="Let's build." accent={[5, 6, 7, 8, 9, 10]} />
       {/* taped note */}
       <div className="mt-4 flex justify-center">
         <span className="-rotate-[1.2deg] rounded-md rounded-br-[1px] bg-[#fbe9cf] px-4 py-2 text-[14px] font-medium text-ink shadow-[0px_8px_20px_-12px_rgba(20,19,16,0.4)]">

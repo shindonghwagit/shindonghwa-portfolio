@@ -15,67 +15,70 @@ export function Footer() {
   return (
     <footer className="relative mt-10 overflow-hidden bg-ink text-white">
       <div className="mx-auto max-w-[1280px] px-6 pt-20">
-        {/* top CTA */}
-        <div className="flex flex-wrap items-end justify-between gap-8 border-b border-white/10 pb-14">
+        {/* top: CTA + nav — mirrors the studio's footer top */}
+        <div className="flex flex-wrap justify-between gap-x-14 gap-y-12 pb-14">
+          {/* CTA — small eyebrow, giant email headline, action row */}
           <div>
-            <p className="font-script text-2xl text-brand">let's talk</p>
-            <h3 className="mt-1 font-display text-[clamp(32px,5vw,56px)] font-extrabold leading-[0.95] tracking-[-1.5px]">
-              have an idea<br />worth building?
-            </h3>
-          </div>
-          <div className="flex flex-col items-start gap-4">
-            <a href="mailto:ek65110112@gmail.com" className="font-mono text-[15px] text-white/70 underline-offset-4 hover:text-white hover:underline">
-              ek65110112@gmail.com
-            </a>
+            <p className="font-mono text-[12px] font-bold uppercase tracking-[0.16em] text-brand">
+              have an idea worth building?
+            </p>
             <a
               href="mailto:ek65110112@gmail.com"
-              className="flex items-center gap-2.5 rounded-[10px] bg-brand px-[22px] py-3 text-[14px] font-bold text-white shadow-[0px_12px_26px_-12px_#f0531c] transition-transform hover:-translate-y-0.5"
+              className="group my-4 flex w-fit items-center gap-[0.18em] font-display text-[clamp(26px,4.4vw,52px)] font-bold leading-none tracking-[-0.03em] text-white"
             >
-              Show us the idea
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              ek65110112@gmail.com
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                className="size-[0.5em] text-brand transition-transform duration-300 group-hover:-translate-y-2 group-hover:translate-x-2"
+              >
+                <path d="M7 17 17 7M8 7h9v9" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </a>
-            <span className="flex items-center gap-2 font-mono text-[12px] text-[#27c06b]">
-              <span className="size-2 rounded-full bg-[#27c06b]" /> available for projects
-            </span>
-          </div>
-        </div>
-
-        {/* link columns */}
-        <div className="grid grid-cols-2 gap-8 py-14 md:grid-cols-3">
-          {COLS.map((c) => (
-            <div key={c.title}>
-              <p className="mb-4 font-mono text-[11px] font-bold uppercase tracking-[1.5px] text-white/40">{c.title}</p>
-              <ul className="flex flex-col gap-2.5">
-                {c.links.map((l) => (
-                  <li key={l}>
-                    <a
-                      href="#"
-                      className="group relative inline-block w-fit text-[15px] text-white/75 transition-colors hover:text-white"
-                    >
-                      {l}
-                      {/* Figma selection box + corner handles on hover */}
-                      <span className="pointer-events-none absolute -inset-x-2 -inset-y-1 rounded-[3px] border border-blue opacity-0 transition-opacity group-hover:opacity-100" />
-                      {['-left-2 -top-1', '-right-2 -top-1', '-bottom-1 -left-2', '-bottom-1 -right-2'].map((p) => (
-                        <span
-                          key={p}
-                          className={`pointer-events-none absolute ${p} size-[6px] -translate-x-1/2 -translate-y-1/2 rounded-[1px] border border-blue bg-white opacity-0 transition-opacity group-hover:opacity-100`}
-                        />
-                      ))}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+            <div className="flex flex-wrap items-center gap-[18px]">
+              <a
+                href="mailto:ek65110112@gmail.com"
+                className="flex items-center gap-2.5 rounded-[10px] bg-brand px-[22px] py-3 text-[14px] font-bold text-white shadow-[0px_12px_26px_-12px_#f0531c] transition-all duration-300 hover:-translate-y-0.5 hover:bg-ink"
+              >
+                Show us the idea
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              </a>
+              <span className="flex items-center gap-2 font-mono text-[12px] font-bold text-white/80">
+                <span className="size-2 animate-pulse rounded-full bg-[#27c06b]" /> available for projects
+              </span>
             </div>
-          ))}
+          </div>
+
+          {/* nav columns */}
+          <div className="flex flex-wrap gap-x-14 gap-y-8">
+            {COLS.map((c) => (
+              <div key={c.title}>
+                <p className="mb-3.5 font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-white/40">{c.title}</p>
+                <ul className="flex flex-col">
+                  {c.links.map((l) => (
+                    <li key={l}>
+                      <a
+                        href="#"
+                        className="block py-[5px] text-[15px] font-medium text-white/80 transition-[color,transform] hover:translate-x-[3px] hover:text-brand"
+                      >
+                        {l}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* giant wordmark — letters lift & light up near the pointer */}
-      <div className="flex justify-center overflow-hidden px-4 pb-4">
+      {/* giant wordmark — letters lift near the pointer, so clip only the
+          horizontal overflow (never the vertical lift) and leave headroom */}
+      <div className="flex justify-center overflow-x-clip px-4 pb-4 pt-6">
         <ReactiveText
           text={WORD}
-          glow
           accent={[7, 8, 9, 10]} /* SHIN — brand-coloured like ohhmydesign's leading letter */
+          strength={1.8}
           className="font-display text-[clamp(40px,13vw,180px)] font-extrabold leading-none tracking-[-4px] text-white"
         />
       </div>

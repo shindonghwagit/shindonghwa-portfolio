@@ -11,6 +11,7 @@ export function ReactiveText({
   letterClassName = '',
   glow = false,
   accent = [],
+  strength = 1,
 }: {
   text: string
   className?: string
@@ -18,6 +19,9 @@ export function ReactiveText({
   glow?: boolean
   /** letter indices (spaces ignored) to paint in the brand colour */
   accent?: number[]
+  /** reaction intensity — >1 widens the radius and lifts letters more, to
+   *  match the studio's bolder giant-wordmark hover */
+  strength?: number
 }) {
   const ref = useRef<HTMLSpanElement>(null)
   const ptr = useRef({ x: 0, y: 0, active: false })
@@ -33,7 +37,7 @@ export function ReactiveText({
     }
     const els = wrap.querySelectorAll<HTMLElement>('[data-rl]')
     const wr = wrap.getBoundingClientRect()
-    const R = Math.max(170, wr.height * 1.7) // wide, soft falloff
+    const R = Math.max(170, wr.height * 1.7) * strength // wide, soft falloff
     let alive = false
 
     els.forEach((el, i) => {
@@ -60,9 +64,9 @@ export function ReactiveText({
       if (Math.abs(tgt - c) > 0.002 || Math.abs(v) > 0.002) alive = true
 
       if (Math.abs(c) > 0.002) {
-        const lift = -c * el.offsetHeight * 0.12
+        const lift = -c * el.offsetHeight * 0.12 * strength
         const rot = -dxN * 4.5 * c
-        el.style.transform = `translateY(${lift.toFixed(2)}px) rotate(${rot.toFixed(2)}deg) scale(${(1 + c * 0.045).toFixed(3)})`
+        el.style.transform = `translateY(${lift.toFixed(2)}px) rotate(${rot.toFixed(2)}deg) scale(${(1 + c * 0.045 * strength).toFixed(3)})`
       } else {
         el.style.transform = ''
       }
