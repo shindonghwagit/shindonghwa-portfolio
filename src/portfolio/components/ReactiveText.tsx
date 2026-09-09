@@ -10,15 +10,19 @@ export function ReactiveText({
   className = '',
   letterClassName = '',
   glow = false,
+  accent = [],
 }: {
   text: string
   className?: string
   letterClassName?: string
   glow?: boolean
+  /** letter indices (spaces ignored) to paint in the brand colour */
+  accent?: number[]
 }) {
   const ref = useRef<HTMLSpanElement>(null)
   const ptr = useRef({ x: 0, y: 0, active: false })
   const cur = useRef<number[]>([])
+  const vel = useRef<number[]>([])
   const rafId = useRef(0)
 
   const tick = () => {
@@ -43,20 +47,26 @@ export function ReactiveText({
         target = Math.max(0, 1 - Math.hypot(dx, dy) / R)
         dxN = Math.max(-1, Math.min(1, dx / R))
       }
-      // ease current → target (small factor = gentle, smooth trailing)
+      // quadratic falloff — snappier right under the cursor (matches the
+      // original heading reaction), then a light spring so letters lift toward
+      // the pointer and bounce back with a little overshoot on leave.
+      const tgt = target * target
       const prev = cur.current[i] ?? 0
-      const c = prev + (target - prev) * 0.09
+      let v = vel.current[i] ?? 0
+      v = (v + (tgt - prev) * 0.16) * 0.74
+      const c = prev + v
+      vel.current[i] = v
       cur.current[i] = c
-      if (c > 0.002 || target > 0) alive = true
+      if (Math.abs(tgt - c) > 0.002 || Math.abs(v) > 0.002) alive = true
 
-      if (c > 0.002) {
-        const lift = -c * el.offsetHeight * 0.1
-        const skew = -dxN * 6 * c
-        el.style.transform = `translateY(${lift.toFixed(2)}px) skewX(${skew.toFixed(2)}deg) scale(${(1 + c * 0.04).toFixed(3)})`
+      if (Math.abs(c) > 0.002) {
+        const lift = -c * el.offsetHeight * 0.12
+        const rot = -dxN * 4.5 * c
+        el.style.transform = `translateY(${lift.toFixed(2)}px) rotate(${rot.toFixed(2)}deg) scale(${(1 + c * 0.045).toFixed(3)})`
       } else {
         el.style.transform = ''
       }
-      if (glow) el.style.opacity = (0.09 + c * 0.5).toFixed(3)
+      if (glow) el.style.opacity = (0.09 + Math.max(0, c) * 0.5).toFixed(3)
     })
 
     rafId.current = alive ? requestAnimationFrame(tick) : 0
@@ -73,6 +83,8 @@ export function ReactiveText({
   }, [])
 
   const words = text.split(' ')
+  const accentSet = new Set(accent)
+  let gi = -1 // running letter index across words (spaces skipped)
 
   return (
     <span
@@ -89,16 +101,19 @@ export function ReactiveText({
     >
       {words.map((word, wi) => (
         <span key={wi} className="inline-block whitespace-nowrap">
-          {[...word].map((ch, i) => (
-            <span
-              key={i}
-              data-rl
-              className={`inline-block origin-bottom will-change-transform ${letterClassName}`}
-              style={glow ? { opacity: 0.09 } : undefined}
-            >
-              {ch}
-            </span>
-          ))}
+          {[...word].map((ch, i) => {
+            gi += 1
+            return (
+              <span
+                key={i}
+                data-rl
+                className={`inline-block origin-bottom will-change-transform ${accentSet.has(gi) ? 'text-brand' : ''} ${letterClassName}`}
+                style={glow ? { opacity: 0.09 } : undefined}
+              >
+                {ch}
+              </span>
+            )
+          })}
           {wi < words.length - 1 ? ' ' : ''}
         </span>
       ))}

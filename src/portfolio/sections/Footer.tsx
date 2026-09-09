@@ -75,6 +75,7 @@ export function Footer() {
         <ReactiveText
           text={WORD}
           glow
+          accent={[7, 8, 9, 10]} /* SHIN — brand-coloured like ohhmydesign's leading letter */
           className="font-display text-[clamp(40px,13vw,180px)] font-extrabold leading-none tracking-[-4px] text-white"
         />
       </div>

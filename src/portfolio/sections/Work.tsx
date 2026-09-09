@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion, useScroll, useTransform } from 'motion/react'
+import { AnimatePresence, motion, useScroll, useSpring, useTransform } from 'motion/react'
+import { SectionHead } from '../components/bits'
 import { projects } from '../../data/projects'
 import type { Project } from '../../types'
 
@@ -24,12 +25,22 @@ const ITEMS: WorkItem[] = [
 
 const BY_TITLE: Record<string, Project> = Object.fromEntries(projects.map((p) => [p.title, p]))
 
-function Card({ item, onOpen, selected }: { item: WorkItem; onOpen: () => void; selected: boolean }) {
+function Card({
+  item,
+  onOpen,
+  selected,
+  widthClass = 'w-[clamp(300px,42vw,560px)]',
+}: {
+  item: WorkItem
+  onOpen: () => void
+  selected: boolean
+  widthClass?: string
+}) {
   return (
     <button
       onClick={onOpen}
       data-work-card
-      className={`group relative block w-[clamp(300px,42vw,560px)] shrink-0 text-left ${selected ? 'is-selected' : ''}`}
+      className={`group relative block ${widthClass} shrink-0 text-left ${selected ? 'is-selected' : ''}`}
     >
       {/* blue label tab — brightens when the card is the active one */}
       <span
@@ -250,7 +261,10 @@ export function Work() {
   // The pinned frame stays fixed; scrolling through the tall wrapper maps to a
   // horizontal translate — the classic sticky/pinned horizontal scroll.
   const { scrollYProgress } = useScroll({ target: pinRef, offset: ['start start', 'end end'] })
-  const x = useTransform(scrollYProgress, [0, 1], [0, -overflow])
+  const xRaw = useTransform(scrollYProgress, [0, 1], [0, -overflow])
+  // Spring-smoothed pan — the buttery, slightly-trailing glide from the
+  // studio's "what we make" panel instead of a rigid scroll lock.
+  const x = useSpring(xRaw, { stiffness: 90, damping: 26, mass: 0.4 })
 
   // The card nearest the viewport centre becomes "selected" as it pans through.
   useEffect(() => {
@@ -290,6 +304,11 @@ export function Work() {
 
   return (
     <section id="work" className="relative">
+      {/* header — normal flow so it can never be clipped by the pinned frame */}
+      <div className="mx-auto max-w-[1280px] px-6 pt-24">
+        <SectionHead over="selected work" title="Work" />
+      </div>
+
       {/* Desktop: pinned horizontal scroll — the screen holds still while the
           cards slide sideways. */}
       <div
@@ -298,9 +317,16 @@ export function Work() {
         style={{ height: `calc(100vh + ${overflow}px)` }}
       >
         <div className="sticky top-0 flex h-screen flex-col justify-center overflow-hidden">
-          <motion.div ref={trackRef} style={{ x }} className="flex w-max gap-8 px-[8vw] will-change-transform">
+          <motion.div ref={trackRef} style={{ x }} className="flex w-max will-change-transform">
             {ITEMS.map((item, i) => (
-              <Card key={item.slug} item={item} selected={i === active} onOpen={() => setOpen(item)} />
+              <div key={item.slug} className="flex w-screen shrink-0 items-center justify-center px-[5vw]">
+                <Card
+                  item={item}
+                  selected={i === active}
+                  onOpen={() => setOpen(item)}
+                  widthClass="w-full max-w-[min(760px,88vw)]"
+                />
+              </div>
             ))}
           </motion.div>
           {/* progress dots */}
@@ -318,7 +344,7 @@ export function Work() {
       </div>
 
       {/* Mobile: native horizontal swipe (no scroll-jacking on touch). */}
-      <div className="flex snap-x snap-mandatory gap-5 overflow-x-auto px-6 py-16 md:hidden [scrollbar-width:none]">
+      <div className="flex snap-x snap-mandatory gap-5 overflow-x-auto px-6 pb-16 pt-8 md:hidden [scrollbar-width:none]">
         {ITEMS.map((item) => (
           <div key={item.slug} className="snap-center">
             <Card item={item} selected={false} onOpen={() => setOpen(item)} />
