@@ -35,7 +35,7 @@ src/
     Portfolio.tsx         page composition
     portfolio.css         Tailwind + design tokens + keyframes
     components/           Topbar, Ruler, Clouds, Cursors, IntroLoader,
-                          ChatWidget, ParticleHeadline, ReactiveText, bits, useClock
+                          ParticleHeadline, ReactiveText, bits, useClock
     sections/             Hero, Work, About, Experience,
                           Certifications, Cta, Footer
 ```

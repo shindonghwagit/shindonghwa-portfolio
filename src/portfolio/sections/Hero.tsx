@@ -2,7 +2,7 @@ import { motion } from 'motion/react'
 import { useClock } from '../components/useClock'
 import { ParticleHeadline } from '../components/ParticleHeadline'
 
-const HEADLINE = ['IMPOSSIBLE', 'TO IGNORE.']
+const HEADLINE = ['IMPOSSIBLE', 'TO IGNORE .']
 
 export function Hero() {
   const clock = useClock()
@@ -20,11 +20,7 @@ export function Hero() {
         transition={{ delay: 0.2, duration: 0.9 }}
         className="w-full max-w-[1080px]"
       >
-        <ParticleHeadline
-          lines={HEADLINE}
-          src="/assets/portfolio/hero/impossible.png"
-          className="mx-auto aspect-[1080/480] w-full"
-        />
+        <ParticleHeadline lines={HEADLINE} className="mx-auto aspect-[1080/480] w-full" />
       </motion.div>
 
       {/* mono hint */}

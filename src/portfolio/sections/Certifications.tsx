@@ -3,7 +3,9 @@ import { SectionHead } from '../components/bits'
 type Cert = { name: string; issuer: string; year: string; id?: string }
 
 // Fill this in as certifications are earned — the grid renders automatically.
-const CERTS: Cert[] = []
+const CERTS: Cert[] = [
+  { name: '제1종 보통 운전면허', issuer: '도로교통공단', year: '2023' },
+]
 
 export function Certifications() {
   return (

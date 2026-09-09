@@ -5,7 +5,6 @@ import { Ruler } from './components/Ruler'
 import { Cursors } from './components/Cursors'
 import { Clouds } from './components/Clouds'
 import { Sky, useSkyTheme } from './components/Sky'
-import { ChatWidget } from './components/ChatWidget'
 import { Hero } from './sections/Hero'
 import { Work } from './sections/Work'
 import { About } from './sections/About'
@@ -24,7 +23,6 @@ export function Portfolio() {
       <Ruler />
       <Topbar />
       <Cursors />
-      <ChatWidget />
 
       <main className="relative z-10">
         <Hero />
