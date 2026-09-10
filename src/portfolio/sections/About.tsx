@@ -40,13 +40,13 @@ export function About() {
           <CellLabel>ABOUT.TXT</CellLabel>
           <span className="font-display text-6xl leading-none text-brand">“</span>
           <p className="text-[19px] leading-[30px] text-ink-soft">
-            <span className="font-bold text-ink">순천향대학교 컴퓨터소프트웨어공학과</span>에 재학 중입니다. API 설계부터
-            데이터베이스 연결, 프론트엔드 구현, 배포까지 처음부터 끝까지 직접 만드는 걸 좋아합니다.
+            <span className="font-bold text-ink">AI CS Lab</span>에서 <span className="font-bold text-ink">학부 연구생</span>으로
+            있습니다. 수많은 아이디어 속에서도 직접 만들고, 끝까지 완성해내는 개발자가 되고자 합니다.
           </p>
           <p className="text-[19px] leading-[30px] text-ink-soft">
-            요즘은 <span className="font-bold text-ink">AI CS 랩</span>에서 모델을 학습시키고, 그것을 실제로 사람들이 쓸 수
-            있는 형태로 만드는 일을 하고 있습니다. 라이브러리에 손을 뻗기 전에 핵심 로직은 최소 한 번은 직접 구현해보는 게
-            제 원칙입니다.
+            새로운 기술을 배우는 것보다 중요한 것은 그것을 <span className="font-bold text-ink">실제 서비스로 구현해내는 것</span>
+            이라고 생각합니다. 작은 차이를 꾸준히 쌓아, 결국 눈에 띄는 한 사람 —{' '}
+            <span className="font-bold text-ink">군계일학(群鷄一鶴)</span>이 되는 것이 저의 목표입니다.
           </p>
           <div className="mt-1 flex flex-wrap items-center gap-4 border-t border-ink/[0.13] pt-5 font-mono text-[11px] uppercase tracking-[1.32px] text-[#8aa6b8]">
             <span>📍 순천향대학교</span>
